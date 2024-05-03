@@ -1,17 +1,17 @@
 import Link from 'next/link';
 import '../CSS/Navigation.css';
-
 export default function Navigation() {
     return (
         <div className="menuContainer">
             <ul className="menuItems">
-                <li><Link href="/ProjectForm"><a>View Projects</a></Link></li>
-                <li><Link href="/feedback"><a>Submit Feedback</a></Link></li>
-                <li><Link href="/about"><a>About Us</a></Link></li>
-                <li><Link href="/contact"><a>Contact Us</a></Link></li>
-                <li><Link href="/login"><a>Login</a></Link></li>
-                <li><Link href="/signup"><a>Sign Up</a></Link></li>
-                {/* Add more menu items as needed */}
+                <li><Link href="../components/projectform" legacyBehavior><a>Project Form</a></Link></li>
+                <li><Link href="../components/feedback" legacyBehavior><a>Submit Feedback</a></Link></li>
+                <li><Link href="../components/errornotification" legacyBehavior><a>Error</a></Link></li>
+                <li><Link href="../components/projecttable" legacyBehavior><a>Projects</a></Link></li>
+                <li><Link href="../components/login" legacyBehavior><a>Login</a></Link></li>
+                <li><Link href="../components/signup" legacyBehavior><a>Sign Up</a></Link></li>
+                <li><Link href="../components/feedbackdisplay" legacyBehavior><a>Feedbacks</a></Link></li>
+                <li><Link href="../components/successfulnotification" legacyBehavior><a>Success</a></Link></li>
             </ul>
         </div>
     );

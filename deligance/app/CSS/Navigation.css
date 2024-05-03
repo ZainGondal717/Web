@@ -1,36 +1,35 @@
-/* Navigation.css */
-
 .menuContainer {
-    background-color: #333; /* Background color for the navigation bar */
-    padding: 10px 0; /* Padding around the navigation items */
-    text-align: center; /* Center-align the menu items */
-}
-
-.menuItems {
-    list-style-type: none; /* Remove default bullet points */
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-}
-
-.menuItems li {
-    display: inline-block; /* Display list items horizontally */
-    margin-right: 20px; /* Add spacing between menu items */
-}
-
-.menuItems li:last-child {
+    background-color: #f8f9fa; /* Light gray background color */
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    align-items: center;
+  }
+  
+  .menuItems {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menuItems li {
+    display: inline-block; /* Display menu items horizontally */
+   margin-right: 20px; /* Add space between menu items */
+  }
+  
+  .menuItems li:last-child {
     margin-right: 0; /* Remove margin from the last menu item */
-}
-
-.menuItems li a {
-    color: #fff; /* Text color for menu items */
+  }
+  
+  .menuItems li a {
     text-decoration: none; /* Remove underline from links */
-    font-size: 16px; /* Font size for menu items */
-    padding: 10px 15px; /* Add padding around menu items */
-    border-radius: 5px; /* Add rounded corners to menu items */
-    background-color: #4CAF50; /* Background color for menu items */
-    transition: background-color 0.3s; /* Smooth transition on hover */
-}
-
-.menuItems li a:hover {
-    background-color: #45a049; /* Background color on hover */
-}
+    color: #333; /* Dark text color */
+    font-size: 16px; /* Font size */
+    padding: 10px; /* Add padding for clickable area */
+    transition: color 0.3s; /* Smooth color transition on hover */
+  }
+  
+  .menuItems li a:hover {
+    color: #007bff; /* Change color on hover */
+  }
+  
