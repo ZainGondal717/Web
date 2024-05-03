@@ -1,0 +1,34 @@
+/* ProjectTable.css */
+
+.project-table {
+    margin-top: 20px;
+    color: #141212;
+}
+
+.project-table h2 {
+    margin-bottom: 10px;
+}
+
+.project-table table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #141212;
+}
+
+.project-table th, .project-table td {
+    border: 1px solid #141212;
+    padding: 8px;
+    text-align: left;
+}
+
+.project-table th {
+    background-color: #4a64f5;
+}
+
+.project-table tbody tr:nth-child(even) {
+    background-color: #d7d3d3;
+}
+
+.project-table tbody tr:hover {
+    background-color: #ccd3e2;
+}
