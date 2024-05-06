@@ -1,0 +1,74 @@
+/* Login Page Styles */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .login-page h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .login-page form {
+    width: 350px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-page input[type="text"],
+  .login-page input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .login-page input[type="radio"] {
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .login-page button {
+    width: calc(100% - 20px);
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .login-page button:hover {
+    background-color: #0056b3;
+  }
+  
+  .register-forget {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .register-forget a {
+    margin: 0 15px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .register-forget a:hover {
+    text-decoration: underline;
+  }
+  
+  label {
+    color: #555;
+    font-size: 16px;
+  }
+  

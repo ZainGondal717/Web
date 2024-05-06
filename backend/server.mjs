@@ -1,100 +1,215 @@
-import adddata from "./modules/schema.mjs";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import projectSchema from "./modules/schemaproject.mjs"
-import feedbackSchema from "./modules/feedbackschama.mjs"
-import { mongoose } from "mongoose";
+import mongoose from "mongoose";
+import userschema from "./modules/userschema.mjs";
+import clientschema from "./modules/clientschema.mjs";
+import projectSchema from "./modules/schemaproject.mjs";
+import feedbackSchema from "./modules/feedbackschema.mjs";
+import adminschema from "./modules/adminschema.mjs";
+
+import multer from "multer";
 
 dotenv.config();
+
 const port = 3002;
 const app = express();
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-  })
-);
+
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
+
 const connectionString = process.env.DB_URL;
 
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
 
-app.post("/Login", async (req, res) => {
-  const { Email, password } = req.body;
+const upload = multer({ storage: storage });
+
+app.post('/projects', upload.single('file'), async (req, res) => {
   try {
-    const result = await adddata.findOne({ Email: Email, password: password });
-    if (result) {
-      res.status(200).json(result);
+    const { projectName, description, startDate, endDate, fundingDetails, status } = req.body;
+
+    // Check if the status field is provided
+    if (!status) {
+      return res.status(400).json({ error: 'Status is required' });
     }
-  } catch (e) {
-    res.status(400).json({ message: e.message });
+
+    const project = new projectSchema({
+      projectName,
+      description,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+      fundingDetails,
+      status,
+      filePath: req.file.path
+    });
+
+    await project.save();
+
+    res.status(201).json({ message: "Project created successfully" });
+  } catch (error) {
+    console.error("Error creating project:", error);
+    res.status(500).json({ message: "Error creating project" });
   }
 });
 
-app.post("/SignUp", async (req, res) => {
-  const { password, Email, Username } = req.body;
-  const user = new adddata({
-    Email: Email,
-    Username: Username,
-    password: password,
-  });
-  const result = await adddata.findOne({ Email: Email });
-  if (result) {
-    res.status(409).json("already Exist");
-  } else {
-    try {
-      const dataSave = await user.save();
-      res.status(200).json(dataSave);
-    } catch (e) {
-      res.status(400).json({ message: e.message });
+// Login endpoint
+app.post("/login", async (req, res) => {
+  const { email, password, userType } = req.body;
+  try {
+    let user;
+
+    if (userType === "user") {
+      user = await userschema.findOne({ email, password });
+    } else if (userType === "client") {
+      user = await clientschema.findOne({ email, password });
+    } else if (userType === "admin") {
+      user = await adminschema.findOne({ email, password });
     }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
-app.post('/projects', async (req, res) => {
-    try {
-      const { projectName, description, startDate, endDate, fundingDetails } = req.body;
-  
-      const project = new projectSchema({
-        projectName,
-        description,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        fundingDetails,
-      });
-  
-   
-      const newProject = await project.save();
-  
-      res.status(201).json(newProject); 
-    } catch (err) {
-      console.error('Error creating project:', err);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
-  app.get('/projects', async (req, res) => {
-    try {
-        
-        const projects = await projectSchema.find(); 
-        res.json(projects);
-    } catch (error) {
-        console.error('Error fetching projects:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+
+
+// User signup
+app.post("/api/signup/user", async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const newUser = new userschema({
+      username,
+      password,
+      email
+    });
+    await newUser.save();
+    res.status(201).json({ message: "User signed up successfully" });
+  } catch (error) {
+    console.error("Error signing up user:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
-app.post('/feedback', async (req, res) => {
-    try {
-      const { projectId, feedback } = req.body;
-   
-      const newFeedback = new feedbackSchema({ projectId, feedback });
-     
-      await newFeedback.save();
-      res.status(201).json({ message: 'Feedback submitted successfully' });
-    } catch (error) {
-      console.error('Error submitting feedback:', error);
-      res.status(500).json({ error: 'Internal server error' });
+
+// Client signup
+app.post("/api/signup/client", async (req, res) => {
+  try {
+    const { companyName, password, email } = req.body;
+    const newClient = new clientschema({
+      companyName,
+      password,
+      email
+    });
+    await newClient.save();
+    res.status(201).json({ message: "Client signed up successfully" });
+  } catch (error) {
+    console.error("Error signing up client:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+// Admin signup
+app.post("/api/signup/admin", async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const newAdmin = new adminschema({
+      username,
+      password,
+      email
+    });
+    await newAdmin.save();
+    res.status(201).json({ message: "Admin signed up successfully" });
+  } catch (error) {
+    console.error("Error signing up admin:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+const router = express.Router();
+
+// Route to get projects with pending status
+router.get('/projects?status=pending', async (req, res) => {
+  try {
+    // Fetch projects with status 'pending' from the database
+    const projects = await projectSchema.find({ status: 'pending' }, '_id projectName');
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+export default router;
+
+
+// Fetch all projects endpoint
+app.get('/projects', async (req, res) => {
+  try {
+    const projects = await projectSchema.find();
+    res.json(projects);
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update project status endpoint
+app.patch('/projects/:id', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    // Find the project by ID and update its status
+    const updatedProject = await projectSchema.findByIdAndUpdate(id, { status }, { new: true });
+
+    if (!updatedProject) {
+      return res.status(404).json({ error: 'Project not found' });
     }
-  });
-app.listen(port, console.log(`Server started at http://localhost:${port}`));
+
+    res.status(200).json(updatedProject);
+  } catch (error) {
+    console.error('Error updating project status:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Submit feedback endpoint
+app.post('/feedback', async (req, res) => {
+  try {
+    const { projectId, feedback } = req.body;
+    const newFeedback = new feedbackSchema({ projectId, feedback });
+    await newFeedback.save();
+    res.status(201).json({ message: 'Feedback submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting feedback:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Fetch all feedbacks endpoint
+app.get('/feedbacks', async (req, res) => {
+  try {
+    const feedbacks = await feedbackSchema.find();
+    res.status(200).json(feedbacks);
+  } catch (error) {
+    console.error('Error fetching feedbacks:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Start the server
+app.listen(port, () => console.log(`Server started at http://localhost:${port}`));

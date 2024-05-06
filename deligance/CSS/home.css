@@ -1,0 +1,53 @@
+/* home.css */
+
+.sliderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    overflow: hidden; 
+    position: relative; 
+  }
+  
+  .ImageContainer {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  
+  .image {
+    flex: 0 0 auto; /* Prevent images from growing */
+    margin-right: 20px; /* Add margin between images */
+    transition: transform 0.5s ease; /* Add transition for smooth sliding */
+  }
+  
+  .WelcomeNote {
+    font-size: 36px;
+    margin-top: 30px;
+    color: black;
+  }
+  
+  .description {
+    font-size: 18px;
+    margin-top: 20px;
+    max-width: 500px;
+    text-align: center;
+    color: black;
+  }
+  
+  .exploreButton {
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .exploreButton:hover {
+    background-color: #0056b3;
+  }
+  

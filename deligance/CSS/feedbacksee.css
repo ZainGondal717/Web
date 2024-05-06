@@ -1,0 +1,38 @@
+
+.FeedbackDisplay {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .FeedbackDisplay h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: black;
+  }
+  
+  .FeedbackDisplay table {
+    width: 100%;
+    border-collapse: collapse;
+    color:black;
+    font-size: 18px;
+  
+  }
+  
+  .FeedbackDisplay th, .FeedbackDisplay td {
+    padding: 10px;
+    border: 1px solid #97969a;
+  }
+  
+  .FeedbackDisplay th {
+    background-color: #dcd5d5;
+    text-align: left;
+    color: black;
+
+  }
+  
+  .FeedbackDisplay .loading {
+    font-style: italic;
+    color:rgb(198, 195, 195);
+  }
+  

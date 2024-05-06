@@ -1,7 +1,9 @@
+// Import necessary modules
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 dotenv.config();
 
+// Define project schema
 const projectSchema = new mongoose.Schema({
   projectName: {
     type: String,
@@ -24,8 +26,17 @@ const projectSchema = new mongoose.Schema({
   },
   fundingDetails: {
     type: String
+  },
+  status: {
+    type: String, // Assuming status is a string, you can adjust the type accordingly
+    required: true ,// Ensure status is required
+    default: "pending" 
+  },
+  filePath: {
+    type: String,
+    required: true // Ensure filePath is required
   }
 });
 
-
-export default mongoose.model('projectsubmit', projectSchema);
+// Create and export the Project model
+export default mongoose.model('Project', projectSchema);
