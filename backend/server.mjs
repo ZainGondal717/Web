@@ -1,13 +1,14 @@
-import express from "express";
+
 import cors from "cors";
+import express, { query } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userschema from "./modules/userschema.mjs";
 import clientschema from "./modules/clientschema.mjs";
-import projectSchema from "./modules/schemaproject.mjs";
+import ProjectSchema from "./modules/schemaproject.mjs";
 import feedbackSchema from "./modules/feedbackschema.mjs";
 import adminschema from "./modules/adminschema.mjs";
-
+import path from 'path';
 import multer from "multer";
 
 dotenv.config();
@@ -17,51 +18,36 @@ const app = express();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
-
+const router = express.Router();
 const connectionString = process.env.DB_URL;
-
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
-
-app.post('/projects', upload.single('file'), async (req, res) => {
-  try {
-    const { projectName, description, startDate, endDate, fundingDetails, status } = req.body;
-
-    // Check if the status field is provided
-    if (!status) {
-      return res.status(400).json({ error: 'Status is required' });
+app.post('/projects', async (req, res) => {
+    try {
+      const { projectName, description, startDate, endDate, fundingDetails } = req.body;
+  
+      // Create a new project
+      const project = new ProjectSchema({
+        projectName,
+        description,
+        startDate,
+        endDate,
+        fundingDetails
+      });
+  
+      await project.save(); // Save the project to the database
+  
+      res.status(201).json({ message: 'Project created successfully!' });
+    } catch (error) {
+      console.error('Error creating project:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
+  });
 
-    const project = new projectSchema({
-      projectName,
-      description,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      fundingDetails,
-      status,
-      filePath: req.file.path
-    });
 
-    await project.save();
 
-    res.status(201).json({ message: "Project created successfully" });
-  } catch (error) {
-    console.error("Error creating project:", error);
-    res.status(500).json({ message: "Error creating project" });
-  }
-});
 
 // Login endpoint
 app.post("/login", async (req, res) => {
@@ -139,27 +125,39 @@ app.post("/api/signup/admin", async (req, res) => {
 });
 
 
-const router = express.Router();
 
-// Route to get projects with pending status
-router.get('/projects?status=pending', async (req, res) => {
+
+
+
+app.get('/pending', async (req, res) => {
   try {
-    // Fetch projects with status 'pending' from the database
-    const projects = await projectSchema.find({ status: 'pending' }, '_id projectName');
+    // Query projects with status 'pending'
+    const projects = await ProjectSchema.find({ status: 'pending' });
+
     res.status(200).json(projects);
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    console.error('Error fetching pending projects:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+// Endpoint to fetch projects with status 'Accept'
+app.get('/Accept', async (req, res) => {
+  try {
+      // Query projects with status 'Accept'
+      const projects = await ProjectSchema.find({ status: 'Accept' });
 
-export default router;
+      res.status(200).json(projects);
+  } catch (error) {
+      console.error('Error fetching projects:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 // Fetch all projects endpoint
 app.get('/projects', async (req, res) => {
   try {
-    const projects = await projectSchema.find();
+    const projects = await ProjectSchema.find();
     res.json(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -174,7 +172,7 @@ app.patch('/projects/:id', async (req, res) => {
 
   try {
     // Find the project by ID and update its status
-    const updatedProject = await projectSchema.findByIdAndUpdate(id, { status }, { new: true });
+    const updatedProject = await ProjectSchema.findByIdAndUpdate(id, { status }, { new: true });
 
     if (!updatedProject) {
       return res.status(404).json({ error: 'Project not found' });

@@ -1,7 +1,7 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Navigation from '../usernavigation';
+import Navigation from '../adminnavigation';
 import '../../../../CSS/projecttable.css';
 
 interface Project {
@@ -11,11 +11,12 @@ interface Project {
     startDate: string;
     endDate: string;
     status: string;
-    fundingDetails: string;
+    fundingDetails:string;
 }
 
 const ProjectTable: React.FC = () => {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>('');
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<string>('');
 
@@ -25,11 +26,23 @@ const ProjectTable: React.FC = () => {
 
     const fetchProjects = async () => {
         try {
-            const response = await axios.get<Project[]>('http://localhost:3002/Accept');
-            setProjects(response.data);
+            const response = await fetch('http://localhost:3002/projects');
+            if (!response.ok) {
+                throw new Error('Failed to fetch projects');
+            }
+            const projectsData = await response.json();
+            setProjects(projectsData);
         } catch (error) {
             console.error('Error fetching projects:', error);
         }
+    };
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedStatus(e.target.value);
     };
 
     const handleProjectClick = (project: Project) => {
@@ -40,7 +53,16 @@ const ProjectTable: React.FC = () => {
         if (!selectedProject || !selectedStatus) return;
 
         try {
-            await axios.patch(`http://localhost:3002/projects/${selectedProject._id}`, { status: selectedStatus });
+            const response = await fetch(`http://localhost:3002/projects/${selectedProject._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: selectedStatus }),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update project status');
+            }
             // Update the local projects array with the new status
             setProjects(prevProjects => {
                 return prevProjects.map(project => {
@@ -57,18 +79,30 @@ const ProjectTable: React.FC = () => {
         }
     };
 
+    const filteredProjects = projects.filter(project =>
+        project.projectName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <>
             <Navigation />
             <h2>Projects</h2>
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search by project name..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+            </div>
             {selectedProject && (
                 <div className="status-update-container">
                     <h3>Update Status for Project:<span> {selectedProject.projectName}</span></h3>
-                    <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
+                    <select value={selectedStatus} onChange={handleStatusChange}>
                         <option value="">Select Status</option>
-                        
-                        <option value="In Progress">In Progress</option>
-                        <option value="Active">Active</option>
+                        <option value="Accept">Accept</option>
+                        <option value="Active">Reject</option>
+                        <option value="In Projress">In Progress</option>
                         <option value="Complete">Complete</option>
                     </select>
                     <button onClick={handleStatusUpdate}>Update Status</button>
@@ -89,7 +123,7 @@ const ProjectTable: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {projects.map(project => (
+                        {filteredProjects.map(project => (
                             <tr key={project._id}>
                                 <td>{project._id}</td>
                                 <td>{project.projectName}</td>
@@ -106,6 +140,7 @@ const ProjectTable: React.FC = () => {
                     </tbody>
                 </table>
             </div>
+           
         </>
     );
 };

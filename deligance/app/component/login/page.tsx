@@ -2,7 +2,7 @@
 import '../../../CSS/login.css';
 import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
-
+import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState("");
@@ -95,8 +95,11 @@ export default function LoginPage() {
                 </button>
             </form>
             <div className="register-forget opacity">
-                <a href="/component/signup">SIGNUP</a>
-                <a href="">FORGOT PASSWORD</a>
+                {/* <a href="/component/signup">SIGNUP</a>
+                <a href="">FORGOT PASSWORD</a> */}
+                <LoginLink>Sign in</LoginLink>
+
+<RegisterLink>Sign up</RegisterLink>
             </div>
         </div>
     );

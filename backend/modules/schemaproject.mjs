@@ -1,10 +1,9 @@
-// Import necessary modules
-import dotenv from 'dotenv';
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
 dotenv.config();
 
-// Define project schema
-const projectSchema = new mongoose.Schema({
+
+const ProjectSchema = new mongoose.Schema({
   projectName: {
     type: String,
     required: true,
@@ -28,15 +27,9 @@ const projectSchema = new mongoose.Schema({
     type: String
   },
   status: {
-    type: String, // Assuming status is a string, you can adjust the type accordingly
-    required: true ,// Ensure status is required
-    default: "pending" 
-  },
-  filePath: {
     type: String,
-    required: true // Ensure filePath is required
+    default: 'pending' // Default status is 'pending'
   }
 });
 
-// Create and export the Project model
-export default mongoose.model('Project', projectSchema);
+export default mongoose.model('Parposal', ProjectSchema);

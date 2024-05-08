@@ -1,5 +1,5 @@
 "use client";
-import Navigation from "../dashboard";
+import Navigation from "../adminnavigation";
 import Image from "next/image";
 import Image1 from "../../../../image/image1.jpeg";
 import Image2 from "../../../../image/image2.jpeg";

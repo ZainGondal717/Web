@@ -1,8 +1,7 @@
 "use client";
-
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import Navigation from '../clientnavigaton';
-import '../../../../CSS/projactparposal.css'; 
+import '../../../../CSS/projactparposal.css';
 
 export default function ProjectForm() {
   const [projectName, setProjectName] = useState("");
@@ -10,35 +9,26 @@ export default function ProjectForm() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [fundingDetails, setFundingDetails] = useState("");
-  const [status, setStatus] = useState(""); // Add status state
-  const [file, setFile] = useState<File | null>(null);
 
-  const api = "http://localhost:3002";
+  const api = "http://localhost:3002"; // Update this with your backend API URL
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setFile(files[0]);
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("projectName", projectName);
-      formData.append("description", description);
-      formData.append("startDate", startDate);
-      formData.append("endDate", endDate);
-      formData.append("fundingDetails", fundingDetails);
-      formData.append("status", status); // Append status to FormData
-      if (file) {
-        formData.append("file", file);
-      }
+      const formData = {
+        projectName,
+        description,
+        startDate,
+        endDate,
+        fundingDetails
+      };
 
       const response = await fetch(`${api}/projects`, {
         method: "POST",
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -55,77 +45,64 @@ export default function ProjectForm() {
 
   return (
     <>
-      <Navigation  />
-      <h1>Project Form</h1>
-      <form className="form-container" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="projectName"
-            placeholder="Project Name"
-            required
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-          />
+      <Navigation />
+      <div className="project-form-container">
+        <div className="form-header">
+          <h1>Project Form</h1>
         </div>
-        <div className="form-group">
-          <textarea
-            name="description"
-            placeholder="Description"
-            required
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="date"
-            name="startDate"
-            placeholder="Start Date"
-            required
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="date"
-            name="endDate"
-            placeholder="End Date"
-            required
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="fundingDetails"
-            placeholder="Funding Details"
-            required
-            value={fundingDetails}
-            onChange={(e) => setFundingDetails(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="status"
-            placeholder="Status"
-            required
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="file"
-            name="file"
-            onChange={handleFileChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+        <form className="form-container" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <input
+              type="text"
+              name="projectName"
+              placeholder="Project Name"
+              required
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <textarea
+              name="description"
+              placeholder="Description"
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="date"
+              name="startDate"
+              placeholder="Start Date"
+              required
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="date"
+              name="endDate"
+              placeholder="End Date"
+              required
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              name="fundingDetails"
+              placeholder="Funding Details"
+              required
+              value={fundingDetails}
+              onChange={(e) => setFundingDetails(e.target.value)}
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </>
   );
 }

@@ -1,54 +1,56 @@
 "use client";
+// Dashboard.tsx
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import '../../../../CSS/pendingstatus.css';
+import Navigation from '../adminnavigation';
 
-// Define interface for project object
-interface Project {
+interface PendingProject {
   _id: string;
   projectName: string;
   status: string;
-  // Add other properties as needed
 }
 
 function Dashboard() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [pendingProjects, setPendingProjects] = useState<PendingProject[]>([]);
 
   useEffect(() => {
-    // Fetch projects with status 'pending' from the API
-    axios.get<Project[]>('/projects?status=pending')
+    axios.get<PendingProject[]>('http://localhost:3002/pending')
       .then(response => {
-        setProjects(response.data);
+        setPendingProjects(response.data);
       })
       .catch(error => {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching pending projects:', error);
       });
   }, []);
 
   return (
-    <div>
+    <><Navigation/>
+    <div className="dashboard-container">
       <h1>Dashboard</h1>
-      <TableContainer component={Paper}>
-        <Table aria-label="project table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Project ID</TableCell>
-              <TableCell>Project Name</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {projects.map((project) => (
-              <TableRow key={project._id}>
-                <TableCell>{project._id}</TableCell>
-                <TableCell>{project.projectName}</TableCell>
-                <TableCell>{project.status}</TableCell>
-              </TableRow>
+      <div className="table-container">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Project ID</th>
+              <th>Project Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pendingProjects.map(project => (
+              <tr key={project._id}>
+                <td>{project._id}</td>
+                <td>{project.projectName}</td>
+                <td>{project.status}</td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+          </tbody>
+        </table>
+      </div>
+    </div></>
+    
   );
 }
 
