@@ -1,0 +1,86 @@
+h2{
+    color: black;
+}
+
+.project-table {
+    margin-top: 2.5%;
+    
+  }
+  
+  .project-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .project-table th, .project-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    color: black;
+  }
+  
+  .project-table th {
+    background-color: #612dff;
+    color: black;
+  }
+  
+  .project-table input[type="text"] {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    color: black;
+  }
+  
+  .project-table select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+
+  }
+  
+  .project-table button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .project-table button:hover {
+    background-color: #0056b3;
+  }
+  
+  .status-update-container {
+    margin-top: 20px;
+  }
+  
+  .status-update-container h3 {
+    margin-bottom: 10px;
+  }
+  
+  .status-update-container select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    color: black;
+  }
+  h3{
+    color: #612dff;
+  }
+  span{
+    color: red;
+  }
+  .status-update-container button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .status-update-container button:hover {
+    background-color: #0056b3;
+  }
+  

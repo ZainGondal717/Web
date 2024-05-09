@@ -1,0 +1,86 @@
+.project-table {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .project-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .project-table th,
+  .project-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #e1dede;
+  }
+  
+  .project-table th {
+    background-color: #4e0bb3;
+    font-weight: bold;
+  }
+  
+  .project-table tbody tr:nth-child(even) {
+    background-color: #f3f584;
+  }
+  
+  .project-table tbody tr:hover {
+    background-color: #716be7;
+  }
+  
+  .update-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #07041a;
+    border-radius: 5px;
+    background-color: #e40c0c;
+    width: 50%;
+  }
+  
+  .update-form h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  
+  .update-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+ .project-table button
+  {
+color:white;
+background-color: #867bc4;
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+  }
+  .update-form input[type="text"],
+  .update-form input[type="date"],
+  .update-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .update-form textarea {
+    height: 100px;
+  }
+  
+  .update-form button[type="submit"] {
+    background-color: #4caf50;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .update-form button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  

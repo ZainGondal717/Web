@@ -1,0 +1,88 @@
+/* exploer.css */
+
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Page title */
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Section titles */
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #4a90e2;
+  }
+  
+  /* Overview section */
+  section {
+    margin-bottom: 30px;
+  }
+  
+  /* Paragraphs */
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* List items */
+  ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  /* List items */
+  ul li {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* Link */
+  a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Epics section */
+  .epics {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Button styles */
+  .exploreButton {
+    padding: 15px 30px;
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .exploreButton:hover {
+    background-color: #ff5252;
+  }
+  
+  /* Responsive design */
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  }
+  
